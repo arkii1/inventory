@@ -21,11 +21,6 @@ mongoose.Promise = global.Promise
 const db = mongoose.connection
 db.on("error", console.error.bind(console, "MongoDB connection error:"))
 
-const authors = []
-const genres = []
-const books = []
-const bookinstances = []
-
 const items = []
 const categories = []
 
@@ -106,7 +101,9 @@ function createItems(cb) {
           12,
           categories[2],
           callback
-        ),
+        )
+      },
+      function (callback) {
         itemCreate(
           "Intel(R) Core(TM) i5-8600K",
           "An 8th Generation Intel Core i5 Projcessor, released late 2017 running with 6 cores @ 3.6Ghz",
@@ -114,7 +111,9 @@ function createItems(cb) {
           8,
           categories[0],
           callback
-        ),
+        )
+      },
+      function (callback) {
         itemCreate(
           "ASUS X570 Crosshair VIII Hero",
           "An AMD motherboard, containing an AMD AM4 socket, an M.2 aluminium heatsink, and on-board 2.5 GBps Ethernet and Gigabit Ethernet",
@@ -122,7 +121,7 @@ function createItems(cb) {
           13,
           categories[1],
           callback
-        ),
+        )
       },
     ],
     // optional callback
