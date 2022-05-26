@@ -2,14 +2,7 @@
 /* eslint-disable func-names */
 /* eslint-disable no-console */
 
-// Get arguments passed on command line
 const userArgs = process.argv.slice(2)
-/*
-if (!userArgs[0].startsWith('mongodb')) {
-    console.log('ERROR: You need to specify a valid mongodb URL as the first argument');
-    return
-}
-*/
 const async = require("async")
 const mongoose = require("mongoose")
 const Item = require("./models/item")
@@ -129,14 +122,9 @@ function createItems(cb) {
   )
 }
 
-async.series(
-  [createCategories, createItems],
-  // Optional callback
-  (err, results) => {
-    if (err) {
-      console.log(`FINAL ERR: ${err}`)
-    }
-    // All done, disconnect from database
-    mongoose.connection.close()
+async.series([createCategories, createItems], (err, results) => {
+  if (err) {
+    console.log(`FINAL ERR: ${err}`)
   }
-)
+  mongoose.connection.close()
+})
