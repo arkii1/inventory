@@ -1,0 +1,13 @@
+extend layout 
+
+block content 
+
+    h1=title
+    form(method='POST' action='')
+        .nameInput 
+            label(for='name') Name: 
+            input( type='text' name='name' max-length=50 min-length=3 placeholder='Category Name' value = (category === undefined ? '' : category.name) )
+        .description 
+            label(for='description') Description: 
+            input( type='text' name='description' max-length=100 min-length=3 placeholder='Category Description' value = (category === undefined ? '' : category.description) )
+        button(type='submit' value='Submit') Submit

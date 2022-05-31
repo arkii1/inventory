@@ -1,5 +1,7 @@
 /* eslint-disable func-names */
 /* eslint-disable no-unused-vars */
+const Category = require("../models/category")
+
 // Display list of all items
 exports.category_item_list = function (req, res, next) {
   res.send("NOT IMPLEMENTED: Category Item List")
@@ -7,7 +9,7 @@ exports.category_item_list = function (req, res, next) {
 
 // Display item create form get
 exports.category_create_get = function (req, res, next) {
-  res.send("NOT IMPLEMENTED: Category Create GET")
+  res.render("category_form", { title: "Create  Category" })
 }
 
 // Handle item create form post

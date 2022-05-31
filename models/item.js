@@ -16,4 +16,4 @@ ItemSchema.virtual("url").get(function () {
   return `/catalog/${this._id}`
 })
 
-module.exports = ItemSchema
+module.exports = mongoose.model("Item", ItemSchema)
