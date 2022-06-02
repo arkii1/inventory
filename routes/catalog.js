@@ -26,7 +26,7 @@ router.get("/item/:id", itemController.item_detail)
 
 router.get("/category/create", categoryController.category_create_get)
 
-router.post("category/create", categoryController.category_create_post)
+router.post("/category/create", categoryController.category_create_post)
 
 router.get("/category/:id/delete", categoryController.category_delete_get)
 
