@@ -13,6 +13,9 @@
         "error", {
           "semi": false
         }
-      ]
+      ],
+      "consistent-return":"off",
+      "func-names": "off",
+      "no-underscore-dangle": "off"
     }
   }
