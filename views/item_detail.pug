@@ -1,0 +1,9 @@
+extend layout 
+
+block content 
+
+    h1=item.title 
+    p=`Description: ${item.description}`
+    p=`£${item.price}`
+    p=`In Stock: ${item.inStock}`
+    category=`Category: ${item.category.name}`
