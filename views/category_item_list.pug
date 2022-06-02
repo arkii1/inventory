@@ -1,0 +1,11 @@
+extend layout 
+
+block content 
+
+    h1=`${category.name}s`
+    for item in items 
+        .item 
+            h2=item.title 
+            p=`£${item.price}`
+            p=`In stock: ${item.inStock}`
+            p=item.description
