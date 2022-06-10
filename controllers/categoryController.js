@@ -3,8 +3,36 @@
 /* eslint-disable prefer-arrow-callback */
 const { body, validationResult } = require("express-validator")
 const async = require("async")
+const { ObjectId } = require("mongodb")
+const { redirect } = require("express/lib/response")
 const Category = require("../models/category")
 const Item = require("../models/item")
+
+exports.category_list = function (req, res, next) {
+  async.parallel(
+    {
+      categories(callback) {
+        Category.find().exec(callback)
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err)
+      }
+
+      if (results.categories === null) {
+        const error = new Error("No categories found")
+        error.status = 404
+        return next(error)
+      }
+
+      res.render("category_list", {
+        title: "Category list",
+        categories: results.categories,
+      })
+    }
+  )
+}
 
 // Display list of all items
 exports.category_item_list = function (req, res, next) {
@@ -91,17 +119,50 @@ exports.category_create_post = [
 
 // Display item delete form get
 exports.category_delete_get = function (req, res, next) {
-  res.send("NOT IMPLEMENTED: Category Delete GET")
+  async.parallel(
+    {
+      category(callback) {
+        Category.findById(req.params.id).exec(callback)
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err)
+      }
+
+      if (results.category === null) {
+        const error = new Error("Category is null")
+        error.status = 404
+        return next(error)
+      }
+
+      res.render("category_delete", {
+        title: `Delete Category: ${results.category.name}`,
+        category: results.category,
+      })
+    }
+  )
 }
 
 // Handle item delete form post
 exports.category_delete_post = function (req, res, next) {
-  res.send("NOT IMPLEMENTED: Category Delete POST")
+  Category.findByIdAndRemove(req.params.id, function deleteCategory(err) {
+    if (err) return next(err)
+
+    res.redirect("/")
+  })
 }
 
 // Display item update form get
 exports.category_update_get = function (req, res, next) {
-  res.send("NOT IMPLEMENTED: Category Update GET")
+  Category.findById(req.params.id, function (err, results) {
+    if (err) {
+      return next(err)
+    }
+
+    if (results.category === null) {
+    }
+  })
 }
 
 // Handle item update form post
