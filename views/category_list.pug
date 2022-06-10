@@ -1,0 +1,11 @@
+extends layout 
+
+block content 
+
+    h1=title
+
+    each category in categories 
+        .category 
+            h2=category.name
+            a(href=`${category.url}`) Category Details
+            a(href=`${category.url}/delete`) Delete Category
