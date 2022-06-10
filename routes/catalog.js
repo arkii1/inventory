@@ -8,7 +8,7 @@ router.get("/", (req, res, next) => {
   res.redirect("/")
 })
 
-router.get("/items", itemController.item_list)
+router.get("/items", itemController.all_items)
 
 router.get("/item/create", itemController.item_create_get)
 
@@ -23,6 +23,8 @@ router.get("/item/:id/update", itemController.item_update_get)
 router.post("/item/:id/update", itemController.item_update_post)
 
 router.get("/item/:id", itemController.item_detail)
+
+router.get("/categories", categoryController.category_list)
 
 router.get("/category/create", categoryController.category_create_get)
 
