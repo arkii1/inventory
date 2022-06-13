@@ -150,20 +150,80 @@ exports.item_create_post = [
 
 // Display item delete form get
 exports.item_delete_get = function (req, res, next) {
-  res.send("NOT IMPLEMENTED: Item Delete GET")
+  Item.findById(req.params.id, (err, results) => {
+    if (err) {
+      return next(err)
+    }
+
+    if (results.item === null) {
+      const error = new Error("No item found")
+      error.status = 404
+      return next(error)
+    }
+
+    res.render("item_delete", {
+      title: `Delete Item: ${results.title}`,
+      item: results,
+    })
+  })
 }
 
 // Handle item delete form post
 exports.item_delete_post = function (req, res, next) {
-  res.send("NOT IMPLEMENTED: Item Delete POST")
+  Item.findByIdAndRemove(req.params.id, (err) => {
+    if (err) return next(err)
+
+    res.redirect("/")
+  })
 }
 
 // Display item update form get
 exports.item_update_get = function (req, res, next) {
-  res.send("NOT IMPLEMENTED: Item Update GET")
+  async.parallel(
+    {
+      item(callback) {
+        Item.findById(req.params.id).populate("category").exec(callback)
+      },
+      categories(callback) {
+        Category.find({}).exec(callback)
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err)
+      }
+
+      if (results.item === undefined) {
+        const error = new Error("Item not found")
+        error.status = 404
+        return next(error)
+      }
+
+      console.log(results.item)
+
+      res.render("item_form", {
+        title: "Item Category",
+        item: results.item,
+        categories: results.categories,
+      })
+    }
+  )
 }
 
 // Handle item update form post
 exports.item_update_post = function (req, res, next) {
-  res.send("NOT IMPLEMENTED: Item Update POST")
+  Item.findByIdAndUpdate(
+    req.params.id,
+    {
+      title: req.body.title,
+      description: req.body.description,
+      price: req.body.price,
+      inStock: req.body.inStock,
+      category: req.body.category,
+    },
+    (err) => {
+      if (err) console.log(err)
+    }
+  )
+  res.redirect("/")
 }
