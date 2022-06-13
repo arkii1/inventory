@@ -146,11 +146,21 @@ exports.category_delete_get = function (req, res, next) {
 
 // Handle item delete form post
 exports.category_delete_post = function (req, res, next) {
-  Category.findByIdAndRemove(req.params.id, function deleteCategory(err) {
-    if (err) return next(err)
+  async.series(
+    {
+      deleteCategories(callback) {
+        Category.findByIdAndDelete(req.params.id).exec(callback)
+      },
+      deleteItem(callback) {
+        Item.deleteMany({ category: ObjectId(req.params.id) }).exec(callback)
+      },
+    },
+    (err) => {
+      if (err) return next(err)
 
-    res.redirect("/")
-  })
+      res.redirect("/")
+    }
+  )
 }
 
 // Display item update form get
@@ -160,12 +170,30 @@ exports.category_update_get = function (req, res, next) {
       return next(err)
     }
 
-    if (results.category === null) {
+    if (results === undefined) {
+      const error = new Error("Category not found")
+      error.status = 404
+      return next(error)
     }
+
+    res.render("category_form", {
+      title: "Update Category",
+      category: results,
+    })
   })
 }
 
 // Handle item update form post
 exports.category_update_post = function (req, res, next) {
-  res.send("NOT IMPLEMENTED: Category Update POST")
+  Category.findByIdAndUpdate(
+    req.params.id,
+    {
+      name: req.body.name,
+      description: req.body.description,
+    },
+    function (err) {
+      if (err) console.log(err)
+    }
+  )
+  res.redirect("/")
 }
