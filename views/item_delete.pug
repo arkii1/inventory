@@ -1,0 +1,15 @@
+extends layout
+
+block content 
+
+    title=title
+    h1=title 
+    h2=item.title
+    p=(item.category === null ? "No Category" : item.category.name)
+    p=`£${item.price}`
+    p=`In stock: ${item.inStock}`
+    p=item.description
+    
+    form(action='' method='POST')
+        input(type='hidden' name='item_id' id='item_id' value=item._id required)
+        button(type='submit') Delete
