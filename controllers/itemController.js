@@ -1,11 +1,69 @@
 /* eslint-disable no-unused-vars */
 const async = require("async")
 const { body, validationResult } = require("express-validator")
+const mongoose = require("mongoose")
 const Category = require("../models/category")
 const Item = require("../models/item")
 
-exports.index = function (req, res) {
-  res.send("NOT IMPLEMENTED: Index")
+function getNewItems(categories, next) {
+  const promises = []
+  // eslint-disable-next-line guard-for-in
+  categories.forEach((c) => {
+    if (mongoose.Types.ObjectId.isValid(c)) {
+      promises.push(
+        new Promise((resolve, reject) => {
+          Item.findOne({ category: c._id })
+            .populate("category")
+            .exec((err, item) => {
+              if (err) return next(err)
+              resolve([c.name, item])
+            })
+        })
+      )
+    }
+  })
+  return promises
+}
+
+exports.index = function (req, res, next) {
+  async.parallel(
+    {
+      categories(callback) {
+        Category.find(callback)
+      },
+    },
+    async (err, results) => {
+      if (err) return next(err)
+
+      const basketObj = {}
+      const newCategories = []
+      results.categories.forEach((category) => {
+        if (
+          !req.cookies.basketObj ||
+          !req.cookies.basketObj[`${category.name}`]
+        ) {
+          newCategories.push(category)
+        } else {
+          basketObj[req.cookies.basketObj[category.name]] =
+            req.cookies.basketObj[category.name]
+        }
+      })
+
+      if (newCategories.length > 0) {
+        await Promise.all(getNewItems(newCategories, next)).then((items) => {
+          items.forEach((item) => {
+            // eslint-disable-next-line prefer-destructuring
+            basketObj[item[0]] = item[1] === undefined || null ? {} : item[1]
+          })
+        })
+
+        res.cookie("basketObj", basketObj)
+        res.render("index", { title: "Express", basket: basketObj })
+      } else {
+        res.render("index", { title: "Express", basket: req.cookies.basketObj })
+      }
+    }
+  )
 }
 
 // Display list of all items
