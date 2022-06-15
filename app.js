@@ -1,11 +1,12 @@
+/* eslint-disable no-restricted-syntax */
 const createError = require("http-errors")
 const express = require("express")
 const path = require("path")
 const cookieParser = require("cookie-parser")
 const logger = require("morgan")
+const mongoose = require("mongoose")
 
 // Set up mongoose connection
-const mongoose = require("mongoose")
 
 const mongoDB =
   "mongodb+srv://dev-account:123@cluster0.byqj9.mongodb.net/inventory?retryWrites=true&w=majority"
@@ -27,6 +28,7 @@ app.use(logger("dev"))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
+
 app.use(express.static(path.join(__dirname, "public")))
 
 app.use("/", indexRouter)
