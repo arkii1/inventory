@@ -4,7 +4,6 @@
 const { body, validationResult } = require("express-validator")
 const async = require("async")
 const { ObjectId } = require("mongodb")
-const { redirect } = require("express/lib/response")
 const Category = require("../models/category")
 const Item = require("../models/item")
 
