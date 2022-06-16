@@ -13,7 +13,7 @@ function getNewItems(categories, next) {
       promises.push(
         new Promise((resolve, reject) => {
           Item.findOne({ category: c._id })
-            .populate("category")
+            .populate("category", { path: "url" })
             .exec((err, item) => {
               if (err) return next(err)
               resolve([c.name, item])
