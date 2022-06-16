@@ -34,7 +34,7 @@ exports.category_list = function (req, res, next) {
 }
 
 // Display list of all items
-exports.category_item_list = function (req, res, next) {
+exports.category_item_list_get = function (req, res, next) {
   async.parallel(
     {
       category(callback) {
@@ -66,6 +66,14 @@ exports.category_item_list = function (req, res, next) {
       })
     }
   )
+}
+
+exports.category_item_list_post = async function (req, res, next) {
+  const item = await Item.findById(req.body.item_id)
+  const { basketObj } = req.cookies
+  basketObj[req.body.category_name] = item
+  res.cookie("basketObj", basketObj)
+  res.redirect("/")
 }
 
 // Display item create form get
