@@ -212,8 +212,6 @@ exports.item_update_get = function (req, res, next) {
         return next(error)
       }
 
-      console.log(results.item)
-
       res.render("item_form", {
         title: "Item Category",
         item: results.item,
@@ -235,7 +233,7 @@ exports.item_update_post = function (req, res, next) {
       category: req.body.category,
     },
     (err) => {
-      if (err) console.log(err)
+      if (err) return next(err)
     }
   )
   res.redirect("/")
