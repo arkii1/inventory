@@ -69,11 +69,16 @@ exports.category_item_list_get = function (req, res, next) {
 }
 
 exports.category_item_list_post = async function (req, res, next) {
-  const item = await Item.findById(req.body.item_id)
-  const { basketObj } = req.cookies
-  basketObj[req.body.category_name] = item
-  res.cookie("basketObj", basketObj)
-  res.redirect("/")
+  Category.findByIdAndUpdate(
+    req.params.id,
+    {
+      item: req.body.item_id,
+    },
+    (err) => {
+      if (err) return next(err)
+      res.redirect("/")
+    }
+  )
 }
 
 // Display item create form get
@@ -111,6 +116,7 @@ exports.category_create_post = [
       const category = new Category({
         name: req.body.name,
         description: req.body.description,
+        item: null,
       })
       // eslint-disable-next-line consistent-return
       category.save(function (err) {
@@ -199,8 +205,8 @@ exports.category_update_post = function (req, res, next) {
       description: req.body.description,
     },
     function (err) {
-      if (err) console.log(err)
+      if (err) return next(err)
+      res.redirect("/")
     }
   )
-  res.redirect("/")
 }
