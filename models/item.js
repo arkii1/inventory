@@ -1,5 +1,3 @@
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable func-names */
 const mongoose = require("mongoose")
 
 const { Schema } = mongoose
@@ -13,7 +11,7 @@ const ItemSchema = new Schema({
 })
 
 ItemSchema.virtual("url").get(function () {
-  return `/catalog/item/${this._id}`
+  return `/item/${this._id}`
 })
 
 module.exports = mongoose.model("Item", ItemSchema)
