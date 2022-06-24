@@ -7,7 +7,7 @@ block content
     each category in categories 
         .category 
             h2=category.name
-            a(href=`${category.url}`) Category Details
+            a(href=category.url) Category List
             a(href=`${category.url}/delete`) Delete Category
             a(href=`${category.url}/update`) Update Category
 
