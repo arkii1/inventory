@@ -1,18 +1,20 @@
 extends layout
 
 block content
-  h1= title
-  each val, index in basket 
-    .entry 
-      h2=val.category.name
-      h3=val.title 
-      p=val.description 
-      p=val.price 
-      p=val.inStock
+  .d-flex.flex-column.justify-content-center.align-items-center.gap-3
+    h1= title
+    each category in categories 
+      .d-flex.flex-column.justify-content-center.align-items-center
+        h2(class="d-block")=category.name
+        h3=(category.item === null ? "No item assigned" : category.item.title)
+        p=(category.item ===  null ? "" : category.item.title)
+        p=(category.item === null ? "" : category.item.price)
+        p=(category.item === null ? "" : category.item.inStock)
+        a(href=`/category/${category._id}`)=`Change ${category.name} assigned item`
 
-  a(href="/catalog/items") Browse Items
-  a(href="/catalog/categories") Browse Categories
+  a(href="/items") Browse Items
+  a(href="/categories") Browse Categories
 
-  a(href="/catalog/category/create") Create Category
-  a(href="/catalog/item/create") Create Item
+  a(href="/category/create") Create Category
+  a(href="/item/create") Create Item
 
