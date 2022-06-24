@@ -2,10 +2,13 @@ extend layout
 
 block content 
 
-    h1=`${category.name}s`
+    h1=category.name
     for item in items 
         .item 
             h2=item.title 
             p=`£${item.price}`
             p=`In stock: ${item.inStock}`
             p=item.description
+            form(method='POST' action='') 
+                input(type='hidden' id='item_id' name='item_id' value=item._id required)
+                button(type='submit' value='Submit') Buy
