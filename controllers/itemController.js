@@ -15,8 +15,15 @@ exports.index = async function (req, res, next) {
     },
     (err, results) => {
       if (err) return next(err)
-
-      res.render("index", { categories: results.categories })
+      const total = results.categories.reduce(
+        (previousValue, category) => previousValue + category.item.price,
+        0
+      )
+      res.render("index", {
+        title: "Basket",
+        categories: results.categories,
+        totalCost: total,
+      })
     }
   )
 }
