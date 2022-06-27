@@ -7,7 +7,9 @@ const categoryController = require("../controllers/categoryController")
 
 router.get("/", itemController.index)
 
-router.get("/items", itemController.all_items)
+router.get("/items", itemController.all_items_get)
+
+router.post("/items", itemController.all_items_post)
 
 router.get("/item/create", itemController.item_create_get)
 
