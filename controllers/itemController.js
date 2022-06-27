@@ -16,7 +16,8 @@ exports.index = async function (req, res, next) {
     (err, results) => {
       if (err) return next(err)
       const total = results.categories.reduce(
-        (previousValue, category) => previousValue + category.item.price,
+        (previousValue, category) =>
+          category.item ? previousValue + category.item.price : previousValue,
         0
       )
       res.render("index", {
@@ -29,7 +30,7 @@ exports.index = async function (req, res, next) {
 }
 
 // Display list of all items
-exports.all_items = function (req, res, next) {
+exports.all_items_get = function (req, res, next) {
   async.parallel(
     {
       items(callback) {
@@ -51,6 +52,21 @@ exports.all_items = function (req, res, next) {
         title: "All Items",
         items: results.items,
       })
+    }
+  )
+}
+
+// Buy an item
+exports.all_items_post = function (req, res, next) {
+  Category.findByIdAndUpdate(
+    req.body.category_id,
+    {
+      item: req.body.item_id,
+    },
+    (err) => {
+      if (err) return next(err)
+
+      res.redirect("/")
     }
   )
 }
@@ -182,7 +198,7 @@ exports.item_delete_get = function (req, res, next) {
     }
 
     res.render("item_delete", {
-      title: `Delete Item: ${results.title}`,
+      title: `Delete ${results.title}`,
       item: results,
     })
   })
@@ -220,7 +236,7 @@ exports.item_update_get = function (req, res, next) {
       }
 
       res.render("item_form", {
-        title: "Item Category",
+        title: `Update ${results.item.title}`,
         item: results.item,
         categories: results.categories,
       })
