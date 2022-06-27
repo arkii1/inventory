@@ -61,6 +61,7 @@ exports.category_item_list_get = function (req, res, next) {
         return next(error)
       }
       res.render("category_item_list", {
+        title: `Item list for ${results.category.name}`,
         category: results.category,
         items: results.items,
       })
@@ -150,7 +151,7 @@ exports.category_delete_get = function (req, res, next) {
       }
 
       res.render("category_delete", {
-        title: `Delete Category: ${results.category.name}`,
+        title: `Delete ${results.category.name} and all associated items`,
         category: results.category,
       })
     }
@@ -190,7 +191,7 @@ exports.category_update_get = function (req, res, next) {
     }
 
     res.render("category_form", {
-      title: "Update Category",
+      title: `Update ${results.name}`,
       category: results,
     })
   })
