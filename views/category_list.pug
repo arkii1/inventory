@@ -1,13 +1,16 @@
 extends layout 
 
 block content 
+    .d-flex.flex-column.justify-content-center.align-items-center.gap-3
+        h1=title
+        hr(class="my-3" style="height: 1px; width: 40vw; color: black")
 
-    h1=title
 
-    each category in categories 
-        .category 
-            h2=category.name
-            a(href=category.url) Category List
-            a(href=`${category.url}/delete`) Delete Category
-            a(href=`${category.url}/update`) Update Category
-
+        each category in categories 
+            .d-flex.flex-column.justify-content-center.align-items-center.gap-1 
+                h2=category.name
+                .d-flex.justify-content-center.align-items-center.gap-2
+                    a(class="btn btn-primary" href=category.url)= `${category.name} Items`
+                    a(class="btn btn-primary" href=`${category.url}/delete`)= `Delete ${category.name} Category`
+                    a(class="btn btn-primary" href=`${category.url}/update`)=`Update ${category.name} Category`
+                hr(class="my-3" style="height: 1px; width: 40vw; color: black")

@@ -1,28 +1,30 @@
-extend layout 
+extends layout 
 
 block content 
-
-    h1=title
-    form(method='POST' action='')
-        .name-input 
-            label(for='title') Title: 
-            input( type='text' name='title' max-length=50 min-length=3 placeholder='Item Title' value = (item === undefined ? '' : item.title) )
-        .description 
-            label(for='description') Description: 
-            input( type='text' name='description' max-length=100 min-length=3 placeholder='Item Description' value = (item === undefined ? '' : item.description) )
-        .price 
-            label(for='price') Price:
-            input( type='number' min="0.01" step="0.01" name='price' placeholder="Item Price" value = (item === undefined ? '' : item.price))
-        .in-stock
-            label(for='inStock') In Stock: 
-            input(type='number' name='inStock' min="0" placeHolder="Item Stock" value = (item === undefined ? '' : item.inStock))
-        .category 
-            label(for='category') Category: 
-            select(name='category' value = (item === undefined ? '' : item.category.name))
-                for category in categories 
-                    option(value=category._id) #{category.name}
-        button(type='submit' value='Submit') Submit
-    if errors
-        ul
-            for error in errors
-                li!= error.msg
+    .d-flex.flex-column.justify-content-center.align-items-center.gap-3
+        h1=title
+        hr(class="my-3" style="height: 1px; width: 40vw; color: black")
+        form(class="d-flex flex-column justify-content-center align-items-center gap-1" method='POST' action='')
+            .d-flex.flex-column.align-items-center.justify-content-center.gap-1
+                label(for='title') Title: 
+                input( type='text' name='title' max-length=50 min-length=3 placeholder='Item Title' value = (item === undefined ? '' : item.title) )
+            .d-flex.flex-column.align-items-center.justify-content.center.gap-1
+                label(for='description') Description: 
+                input( type='text' name='description' max-length=100 min-length=3 placeholder='Item Description' value = (item === undefined ? '' : item.description) )
+            .d-flex.flex-column.align-items-center.justify-content.center.gap-1
+                label(for='price') Price:
+                input( type='number' min="0.01" step="0.01" name='price' placeholder="Item Price" value = (item === undefined ? '' : item.price))
+            .d-flex.flex-column.align-items-center.justify-content.center.gap-1
+                label(for='inStock') In Stock: 
+                input(type='number' name='inStock' min="0" placeHolder="Item Stock" value = (item === undefined ? '' : item.inStock))
+            .d-flex.flex-column.align-items-center.justify-content.center.gap-1
+                label(for='category') Category: 
+                select(name='category' value = (item === undefined ? '' : item.category.name))
+                    for category in categories 
+                        option(value=category._id) #{category.name}
+            button(type='submit' value='Submit' class="btn btn-primary") Submit
+        if errors
+            ul
+                for error in errors
+                    li!= error.msg
+        a(class="btn btn-primary" href=`/`) Return Home

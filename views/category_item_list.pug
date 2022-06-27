@@ -1,14 +1,27 @@
-extend layout 
+extends layout 
 
 block content 
+    title=title
+    .d-flex.flex-column.justify-content-center.align-items-center.gap-3
+        h1=title
+        hr(class="my-3" style="height: 1px; width: 40vw; color: black")
+        for item in items 
+            .d-flex.flex-column.justify-content-center.align-items-center.gap-1 
+                h2=item.title 
+                p=`£${item.price}`
+                p=`In stock: ${item.inStock}`
+                p=item.description
+                .d-flex.justify-content-center.align-items-center.gap-2
+                    form(method='POST' action='') 
+                        input(type='hidden' id='item_id' name='item_id' value=item._id required)
+                        input(type='hidden' id='category_id' name='category_id' value=item.category._id required)
+                        button(type='submit' value='Submit' class="btn btn-primary") Buy
+                    a(class="btn btn-primary" href=`${item.url}/Update`) Update Item
+                    a(class="btn btn-primary" href=`${item.url}/Delete`) Delete Item
+                hr(class="my-3" style="height: 1px; width: 40vw; color: black")
+        .d-flex.justify-content-center.align-items.center.gap-2
+            a(class="btn btn-primary" href=`/item/create`) Create Item
+            a(class="btn btn-primary" href=`/`) Return Home
 
-    h1=category.name
-    for item in items 
-        .item 
-            h2=item.title 
-            p=`£${item.price}`
-            p=`In stock: ${item.inStock}`
-            p=item.description
-            form(method='POST' action='') 
-                input(type='hidden' id='item_id' name='item_id' value=item._id required)
-                button(type='submit' value='Submit') Buy
+
+

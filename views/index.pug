@@ -3,18 +3,24 @@ extends layout
 block content
   .d-flex.flex-column.justify-content-center.align-items-center.gap-3
     h1= title
+    hr(class="my-3" style="height: 1px; width: 40vw; color: black")
     each category in categories 
       .d-flex.flex-column.justify-content-center.align-items-center
         h2(class="d-block")=category.name
         h3=(category.item === null ? "No item assigned" : category.item.title)
-        p=(category.item ===  null ? "" : category.item.title)
-        p=(category.item === null ? "" : category.item.price)
-        p=(category.item === null ? "" : category.item.inStock)
-        a(href=`/category/${category._id}`)=`Change ${category.name} assigned item`
-
-  a(href="/items") Browse Items
-  a(href="/categories") Browse Categories
-
-  a(href="/category/create") Create Category
-  a(href="/item/create") Create Item
+        p=(category.item ===  null ? "" : category.item.description)
+        p=(category.item === null ? "" : `£${category.item.price}`)
+        p=(category.item === null ? "" : `In stock: ${category.item.inStock}`)
+        a(href=`/category/${category._id}` class="btn btn-primary")=`Buy new ${category.name}`
+        hr(class="my-3" style="height: 1px; width: 40vw; color: black")
+  .d-flex.flex-column.justify-content-center.align-items-center.gap-3
+    h3= `Total: £${totalCost}`   
+    hr(class="my-3" style="height: 1px; width: 40vw; color: black")
+    .d-flex.gap-5
+      h3(class="d-flex flex-column justify-content-center align-items-center gap-1") Browse
+        a(href="/items" class="btn btn-primary") Browse Items
+        a(href="/categories" class="btn btn-primary") Browse Categories
+      h3(class="d-flex flex-column justify-content-center align-items-center gap-1") Create
+        a(href="/item/create" class="btn btn-primary") Create Item
+        a(href="/category/create" class="btn btn-primary") Create Category
 
